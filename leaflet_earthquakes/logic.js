@@ -1,26 +1,32 @@
 // Store API endpoint inside queryURL
-var queryUrl = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_week.geojson"
+var queryUrl = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_week.geojson";
 
 // Perform a GET request to query the URL
 d3.json(queryUrl, function(data){
     // Once we get a reponse, send the data.features object to the createFeatures function
     createFeatures(data.features);
-
 });
 
 function createFeatures(earthquakeData){
-
-
-    function onEachFeature(feature, layer){
-        layer.bindPopup("<h3>" + feature.properties.place + "</h3><hr><p>" +
-            new Date(feature.properties.time) + "</p>");
-    }
-
     var earthquakes = L.geoJSON(earthquakeData, {
-        onEachFeature: onEachFeature
+        onEachFeature: function(Feature, layer){
+            layer.bindPopup("<h3>Magintude: " + feature.properties.mag + "</h3><h3>Location: " + 
+            feature.properties.place + new Date(feature.properties.time) + "</p>");
+        },
+
+    pointToLayer: function(eatuer, latlng){
+        return new L.circle(latlng,
+        {radius: getRadius(feature.properties.mag),
+        fillColor: getColor(feature.properties.mag),
+        fillOpacity: .6,
+        color: "#000",
+        stroke: true,
+        weight: .8
+        })
+    }
     });
 
-    createMap(eathquakes)
+    createMap(earthquakes);
 }
 
 function createMap(earthquakes) {
@@ -37,7 +43,7 @@ function createMap(earthquakes) {
 
     // Create overlay object to hold overlay layer
     var overlayMaps = {
-        Earthquakes: earthquakes
+        "Earthquakes": earthquakes
     };
 
     // Create the map giving the map and earthquake layers to display when page is first loaded
@@ -53,4 +59,32 @@ function createMap(earthquakes) {
     L.control.layers(baseMaps, overlayMaps, {
         collapsed: false
         }).addTo(myMap);
+
+    var legend = L.control({position: 'bottomright'})
+
+       legend.onAdd = function(myMap){
+        var div = L.DomUntil.create('div', 'info legend'),
+            grades = [0, 1, 2, 3, 4, 5],
+            labels = [];
+
+        for (var i = 0; i < grades.length; i++){
+            div.innerHTML += '<i style = "background":' + getColor(grades[i] + 1) + '"></i>' + 
+            grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1] + '<br>' : "+");
+        }
+        return div;
+    };
+    legend.addTo(myMap);
 };
+
+    function getColor(d){
+        return d > 5 ? "#a545000":
+        d > 4 ? "#cc5500":
+        d > 3 ? "#ff6f08":
+        d > 2 ? "#ff9143":
+        d > 1 ? "#ffb37e":
+                 "#ffcca5";
+    }
+
+    function getRadius(value){
+        return value*25000
+    }
