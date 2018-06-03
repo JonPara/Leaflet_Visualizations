@@ -9,17 +9,17 @@ d3.json(queryUrl, function(data){
 
 function createFeatures(earthquakeData){
     var earthquakes = L.geoJSON(earthquakeData, {
-        onEachFeature: function(features, layer){
-            layer.bindPopup("<h3>Magintude: " + features.properties.mag + "</h3><h3>Location: " + 
-            features.properties.place + new Date(features.properties.time) + "</p>");
+        onEachFeature: function(Feature, layer){
+            layer.bindPopup("<h3>Magintude: " + feature.properties.mag + "</h3><h3>Location: " + 
+            feature.properties.place + new Date(feature.properties.time) + "</p>");
         },
 
-    pointToLayer: function(feature, latlng){
+    pointToLayer: function(eatuer, latlng){
         return new L.circle(latlng,
         {radius: getRadius(feature.properties.mag),
         fillColor: getColor(feature.properties.mag),
         fillOpacity: .6,
-        color: "#000",  
+        color: "#000",
         stroke: true,
         weight: .8
         })
@@ -33,7 +33,8 @@ function createMap(earthquakes) {
 
     // Define streetmap layer
     var streetMap = L.tileLayer("https://api.mapbox.com/styles/v1/mapbox/outdoors-v10/tiles/256/{z}/{x}/{y}?" +
-    "access_token=pk.eyJ1Ijoiam9ucGFyYSIsImEiOiJjamh4aXplemMwY2FiM3dscmgyYWx2cnA2In0.EkbMLM9pydlSlE8pBTjxLA")
+    "access_token=pk.eyJ1Ijoiam9ucGFyYSIsImEiOiJjamh2NDdwZ2IwMW9vM3BvOXY5djB1ZTZ1In0.Tzo65-TaaZdI1Jcwq5Q9Zg" +
+    "T6YbdDixkOBWH_k9GbS8JQ")
 
     // Define a baseMaps objects to hold the base layer
     var baseMaps = {
@@ -48,7 +49,7 @@ function createMap(earthquakes) {
     // Create the map giving the map and earthquake layers to display when page is first loaded
     var myMap = L.map("map", {
         center: [37.09, -95.71],
-        zoom: 5,
+        zoom: 3,
         layers: [streetMap, earthquakes]
     });
 
@@ -59,7 +60,7 @@ function createMap(earthquakes) {
         collapsed: false
         }).addTo(myMap);
 
-    var legend = L.control({position: 'bottomleft'})
+    var legend = L.control({position: 'bottomright'})
 
        legend.onAdd = function(myMap){
         var div = L.DomUntil.create('div', 'info legend'),
@@ -76,11 +77,11 @@ function createMap(earthquakes) {
 };
 
     function getColor(d){
-        return d === 5 ? "#cc0000":
-        d === 4 ? "#ccc100":
-        d === 3 ? "#0066cc":
-        d === 2 ? "#005fcc":
-        d === 1 ? "#7600cc":
+        return d > 5 ? "#a545000":
+        d > 4 ? "#cc5500":
+        d > 3 ? "#ff6f08":
+        d > 2 ? "#ff9143":
+        d > 1 ? "#ffb37e":
                  "#ffcca5";
     }
 
