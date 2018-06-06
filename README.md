@@ -18,7 +18,7 @@ The USGS is interested in building a new set of tools that will allow them visua
 
    * A legend was added to understand the magnitude based off of colors given.
    
-   (image_1.jpeg)
+![image_1](https://user-images.githubusercontent.com/33237727/41061449-9e062862-69a0-11e8-9655-a273c6cde9d0.JPG)
    
 2. **Tectonic Plates**
 
