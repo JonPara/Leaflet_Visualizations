@@ -25,3 +25,4 @@ The USGS is interested in building a new set of tools that will allow them visua
   The USGS also gives us a second data set on the map to illustrate the relationship between tectonic plates and seismic activity. 
   
   
+![image_2](https://user-images.githubusercontent.com/33237727/41061471-b7af3fb0-69a0-11e8-94d5-17fd79518ae1.JPG)
