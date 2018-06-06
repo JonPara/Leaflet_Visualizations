@@ -18,6 +18,8 @@ The USGS is interested in building a new set of tools that will allow them visua
 
    * A legend was added to understand the magnitude based off of colors given.
    
+   (image_1.jpeg)
+   
 2. **Tectonic Plates**
 
   The USGS also gives us a second data set on the map to illustrate the relationship between tectonic plates and seismic activity. 
